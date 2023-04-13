@@ -1,0 +1,79 @@
+# model
+emiss = [
+
+
+
+
+
+	{
+		cr_cbc: '03C1234567'            -> str
+		isin_cbc: 'BRVERTCRA0V7'      -> str
+		entrega_docs: [              -> list
+
+				{	
+					id_doc = '63682',
+					dt_entrega: '10/11/22'   -> str
+					dt_base: '10/10/22'      -> str
+					ifs: [                   -> list
+						{
+							cod_if: '03C1234567'     -> str
+							class: 'Senior'          -> str
+							isin: "BRVERTCRA0V7"     -> str
+							id: cf0000001,           -> str
+							Serie 1
+						},
+						{
+							cod_if: '03C1234567'     -> str
+							class: 'Subordinada'     -> str
+							isin: "BRVERTCRA1V9"     -> str
+							id: cf0000001,           -> str
+							Serie 2
+						},
+					]
+				},
+				 
+		]
+	}
+
+# add clasificacao de risco coluna 7 toda
+
+
+
+
+]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# find & add.
+
+é igual ao cbc? Sim. -> cbc.emics.push( {
+											id_doc = '63682',
+											dt_entr: '10/12/01' -> str
+											dt_base: '10/11/01'  -> str
+											ifs: [              -> list
+												{
+													cod_if: '03C1234567'
+													class: Senior
+												},
+												{
+													cod_if: '03C1234567'
+													class: Senior
+												},
+											]
+										} 
+									);

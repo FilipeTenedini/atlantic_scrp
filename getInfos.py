@@ -1,18 +1,21 @@
-import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 options = webdriver.ChromeOptions()
 options.add_argument("--headless")
-from bs4 import BeautifulSoup
 driver = webdriver.Chrome(chrome_options=options)
+from bs4 import BeautifulSoup
+from tqdm import tqdm
 from _db import IDS
 
 classes = []
 codsifs = []
 isins = []
 
+progress_bar = tqdm(total=len(IDS))
+
 for id_do_comunicado in IDS:
+    progress_bar.update()
     # Navegar para a página principal
     driver.get(f"https://fnet.bmfbovespa.com.br/fnet/publico/visualizarDocumento?id={id_do_comunicado}&cvm=true/")
 
@@ -26,7 +29,13 @@ for id_do_comunicado in IDS:
     body = driver.find_element(By.TAG_NAME, "body")
     html = body.get_attribute("outerHTML")
     soup = BeautifulSoup(html, "html.parser")
-    tr = soup.find_all('table')[2].find_all('tr')
+    try:
+        tr = soup.find_all('table')[2].find_all('tr')
+    except:
+        try:
+            tr = soup.find_all('table')[2].find_all('tr')
+        except:
+            print(id_do_comunicado)
     for i in tr:
         if not i.has_attr('class') or 'gray' not in i['class']:
             linha = i.find_all('td')
@@ -36,6 +45,5 @@ for id_do_comunicado in IDS:
             classes.append(classe)
             codsifs.append(cod_if)
             isins.append(isin)
+            
 
-df = pd.DataFrame({'classes': classes, 'ifs': codsifs, "isin": isins})
-df.to_excel('CRA_INFOS.xlsx')
